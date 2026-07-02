@@ -86,6 +86,24 @@ AFFIRMATIONS = [
     "I choose progress over perfection today.",
     "I am exactly the mom my kids need.",
     "I give myself the same grace I give everyone else.",
+    "I am not behind. I am exactly where I need to be today.",
+    "My worth isn't measured by how much I got done.",
+    "I am allowed to change my mind about what I can handle today.",
+    "I trust myself to figure it out, even when I don't have a plan.",
+    "I am building a life my kids will be proud to look back on.",
+    "It's okay if today looked nothing like I imagined.",
+    "I don't have to be the calm one every single moment.",
+    "I am learning, not failing.",
+    "My effort counts even when the results are invisible.",
+    "I can love this life and still find it hard.",
+    "I am not responsible for everyone else's emotions today.",
+    "I am allowed to say no without an explanation.",
+    "I am more patient than I give myself credit for.",
+    "The days that feel impossible still end, and I'm still standing.",
+    "I don't need permission to put myself on the list.",
+    "I am someone my younger self would be proud of.",
+    "I can hold stress and still be a good mother.",
+    "I am not failing them by needing a break.",
 ]
 
 CLOSERS = [
@@ -94,6 +112,11 @@ CLOSERS = [
     "Save this for the mornings that feel too heavy.",
     "You've got this. One hour at a time.",
     "Follow for daily reminders you didn't know you needed.",
+    "Send this to a mom who's had a rough week.",
+    "Come back to this the next time it feels like too much.",
+    "You're not alone in this. Not even close.",
+    "Breathe. You are already doing enough.",
+    "Bookmark this for tomorrow morning.",
 ]
 
 # Pexels search terms — rotated so clips vary and match the vibe (calm, warm, real-life).
