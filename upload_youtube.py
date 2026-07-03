@@ -21,7 +21,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+SCOPES = [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.force-ssl",  # needed to read comments for audience_comments.py
+]
 
 
 def get_authenticated_service():
@@ -55,6 +58,35 @@ def upload_short(video_path: str, title: str, description: str, tags=None):
         status, response = request.next_chunk()
     print("YouTube upload complete:", response.get("id"))
     return response.get("id")
+
+
+def post_affiliate_comment(video_id: str, comment_text: str):
+    """
+    Posts a top-level comment containing the affiliate link (comments allow
+    clickable links). Requires the youtube.force-ssl scope, already added
+    to SCOPES above.
+
+    Honest limitation: YouTube's Data API does NOT have a documented,
+    reliable endpoint for pinning a comment — pinning is a YouTube Studio UI
+    action only. This function posts the comment (which does work, and
+    channel-owner comments are often shown near the top by YouTube's own
+    sorting), but it does not guarantee a pinned position. If you want it
+    truly pinned, that's a 5-second manual tap in YouTube Studio after each
+    post — I won't pretend the API does it automatically.
+    """
+    youtube = get_authenticated_service()
+    insert_resp = youtube.commentThreads().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "videoId": video_id,
+                "topLevelComment": {"snippet": {"textOriginal": comment_text}},
+            }
+        },
+    ).execute()
+    comment_id = insert_resp["snippet"]["topLevelComment"]["id"]
+    print("Posted affiliate comment:", comment_id)
+    return comment_id
 
 
 if __name__ == "__main__":

@@ -21,54 +21,54 @@ THEMES = [
 # Opening lines, grouped by theme. Each is a short, punchy hook (first 3 seconds matter most).
 OPENERS = {
     "morning_guilt": [
-        "If you rushed out the door again this morning, this is for you.",
-        "Feeling guilty about the school drop-off chaos? Listen.",
-        "You forgot the lunchbox again. It's okay. Breathe.",
+        "You cried in the school drop-off line again. So did I.",
+        "You forgot the permission slip. Again. It's not the end of the world.",
+        "The mental load hit you before 7am and nobody clapped for it.",
     ],
     "time_management": [
-        "You don't need more hours. You need less guilt about the ones you have.",
-        "Your to-do list will never be done. And that's fine.",
-        "Busy is not the same as behind.",
+        "You answered a work email while your kid asked you three questions. Twice.",
+        "Your to-do list has 40 things on it and you did 6. That's not failure.",
+        "You don't need a better schedule. You need to stop apologizing for the one you have.",
     ],
     "self_care_permission": [
-        "You are allowed to rest without earning it first.",
-        "Taking five minutes for yourself is not selfish.",
-        "Your cup has to be full before you can pour into anyone else's.",
+        "You sat in the car for two extra minutes before going inside. That was self-care.",
+        "You haven't showered without an audience in three days. This is for you.",
+        "Nobody is coming to give you permission to rest. So take it anyway.",
     ],
     "career_confidence": [
-        "Being a mom didn't make you less capable at work. It made you sharper.",
-        "You run a household and a career. Act like the CEO you are.",
-        "Doubting yourself today? You've survived every hard day before this one.",
+        "You went from a diaper blowout to a client call in nine minutes flat.",
+        "They don't know you closed that deal on two hours of sleep.",
+        "You second-guessed yourself in that meeting today. You were still right.",
     ],
     "exhaustion_relief": [
-        "Tired isn't weakness. Tired is proof of how much you carry.",
-        "It's okay to be touched out, talked out, and done by 7pm.",
-        "You don't have to be everything today. Just enough.",
+        "You said 'I'm fine' four times today and meant it zero times.",
+        "Bedtime finally happened and you just sat on the floor for a minute. Good.",
+        "You're touched out, talked out, and it's only Tuesday.",
     ],
     "small_wins": [
-        "Everyone fed. Everyone alive. That's a win today.",
-        "You showed up again today. That counts more than you think.",
-        "Small progress is still progress. Don't dismiss it.",
+        "Nobody died, everyone ate, and you're still upright. Ten out of ten.",
+        "You packed a lunch, missed a meeting, and survived both. That's a full day.",
+        "The laundry is still in the dryer from Monday. You are still doing great.",
     ],
     "letting_go_of_perfect": [
-        "The laundry can wait. Your peace can't.",
-        "Perfect mom doesn't exist. Present mom does.",
-        "Done is better than perfect. Every single time.",
+        "You served cereal for dinner. Nobody remembers that but you.",
+        "The Pinterest version of motherhood was never real. Yours is.",
+        "You apologized to your kid for snapping. That's not failing, that's parenting.",
     ],
     "asking_for_help": [
-        "Asking for help is not failure. It's wisdom.",
-        "You don't get a medal for doing it all alone.",
-        "Let someone else carry it today. You're allowed.",
+        "You said 'I can't do this alone' out loud today. That took guts.",
+        "Someone offered to help and you almost said no out of habit. Don't.",
+        "You are not less of a mom for needing backup.",
     ],
     "presence_over_perfection": [
-        "Ten focused minutes beat two distracted hours.",
-        "They won't remember the mess. They'll remember you sitting down with them.",
-        "Put the phone down for five minutes. That's the whole trick.",
+        "You put the phone down for five minutes today. They noticed.",
+        "You missed the email but caught the joke your kid told at dinner.",
+        "Ten distracted minutes with them will never beat five real ones.",
     ],
     "identity_beyond_mom": [
-        "You were someone before 'mom' and you still are.",
-        "Your dreams didn't expire when you became a parent.",
-        "It's okay to want something just for you.",
+        "You had a thought today that had nothing to do with anyone else's schedule.",
+        "You used to have a hobby. She's still in there.",
+        "Somewhere under the diaper bag is a person with her own dreams. Hi, her.",
     ],
 }
 
@@ -107,13 +107,13 @@ AFFIRMATIONS = [
 ]
 
 CLOSERS = [
-    "Say it with me: I am enough today.",
+    "Comment 'ME' if today was one of those days.",
     "Tag a mom who needs to hear this today.",
     "Save this for the mornings that feel too heavy.",
     "You've got this. One hour at a time.",
-    "Follow for daily reminders you didn't know you needed.",
+    "Follow for the version of motherhood nobody posts about.",
     "Send this to a mom who's had a rough week.",
-    "Come back to this the next time it feels like too much.",
+    "Comment your hardest part of today. I'll go first: mine was bedtime.",
     "You're not alone in this. Not even close.",
     "Breathe. You are already doing enough.",
     "Bookmark this for tomorrow morning.",
@@ -140,6 +140,123 @@ HASHTAGS = (
     "#momtok #shortsfeed #motivation #selfcare #momguilt"
 )
 
+# --- Persona / consistent branding ---------------------------------------
+# A recurring identity + sign-off, used on every video, builds recognition
+# the way a jingle or a talk-show sign-off does — repetition is the point.
+PERSONA_NAME = "The 6:47am Pep Talk"  # rename to whatever you want the account called
+TAGLINE = "— from your 6:47am pep talk 💛"  # appended after every closer, verbatim, every time
+
+# --- Calendar-aware theming ------------------------------------------------
+# Real-world timing makes generic content feel specific. Maps month -> themes
+# to weight more heavily that month (still falls back to normal rotation
+# the rest of the time). Expand freely.
+CALENDAR_THEME_BOOST = {
+    1: ["identity_beyond_mom", "career_confidence"],      # New Year, back-to-routine
+    3: ["exhaustion_relief"],                              # daylight saving time change
+    5: ["identity_beyond_mom", "self_care_permission"],    # Mother's Day month (US)
+    8: ["morning_guilt", "time_management"],               # back-to-school
+    9: ["morning_guilt", "letting_go_of_perfect"],          # school year in full swing
+    12: ["letting_go_of_perfect", "asking_for_help"],       # holiday overload
+}
+
+# --- Real-women spotlight bank ---------------------------------------------
+# Unlike the affirmation banks, these are NOT freely recombined or invented —
+# each is a fact-checked, sourced statement about a real public figure.
+# Review/refresh this list by hand periodically; don't let it silently
+# "generate" new claims about real people without a human checking sources.
+# No images/video of the actual people are used (see build_video.py) — only
+# generic stock b-roll — to avoid likeness/rights issues.
+SPOTLIGHT_STORIES = [
+    {
+        "name": "Serena Williams",
+        "lines": [
+            "Serena Williams won the 2017 Australian Open, her 23rd Grand Slam title, while about eight weeks pregnant.",
+            "She didn't tell anyone at the time. She just showed up and won anyway.",
+        ],
+        "source": "olympics.com, June 2025 / CNBC, June 2025",
+    },
+    {
+        "name": "J.K. Rowling",
+        "lines": [
+            "J.K. Rowling wrote the first Harry Potter book as an unemployed single mother in Edinburgh.",
+            "She wheeled her daughter's pram into cafes and wrote while the baby slept, with no idea it would become one of the best-selling book series in history.",
+        ],
+        "source": "Accio Quote interview archive; multiple contemporaneous press accounts",
+    },
+]
+
+FALLBACK_TAG = "spotlight"  # theme key used when a spotlight story is selected
+TIP_TAG = "tips"            # theme key used when a practical-tips set is selected
+
+# --- Practical tips bank -----------------------------------------------
+# Unlike AFFIRMATIONS, these are curated as coherent sets (not freely mixed)
+# because actionable tips need to relate to each other to make sense as a list.
+TIP_CONTENT = [
+    {
+        "hook": "3 things that actually saved my mornings, not just sounded nice.",
+        "tips": [
+            "Pack lunches the night before, even half-asleep. Future you will be so relieved.",
+            "Lay out everyone's clothes, including yours, before bed.",
+            "Set one alarm ten minutes earlier than you think you need. That buffer changes everything.",
+        ],
+        "theme": "morning_guilt",
+    },
+    {
+        "hook": "The one email trick that gave me back 20 real minutes a day.",
+        "tips": [
+            "Check email at set times, not constantly. Your inbox can wait, your coffee can't.",
+            "Use templated replies for the questions you get every single week.",
+            "Turn off notifications after 6pm. Nothing there is worth your evening.",
+        ],
+        "theme": "time_management",
+    },
+    {
+        "hook": "3 tiny self-care moves that don't need a spa day.",
+        "tips": [
+            "Sit in the car for two extra minutes before going inside. Nobody needs to know.",
+            "Keep one drawer that's just yours, with things that make you happy.",
+            "Say no to one thing this week without an explanation attached.",
+        ],
+        "theme": "self_care_permission",
+    },
+    {
+        "hook": "How I stopped apologizing for leaving work on time.",
+        "tips": [
+            "Block your calendar for pickup like it's a real meeting, because it is.",
+            "Say 'I have a hard stop' instead of over-explaining why.",
+            "Remember: the people judging you for leaving on time aren't paying your bills.",
+        ],
+        "theme": "career_confidence",
+    },
+    {
+        "hook": "3 ways to reset when you're running on empty.",
+        "tips": [
+            "Drink the water before the coffee. It actually helps more.",
+            "Step outside for two minutes, even in your work clothes.",
+            "Lower the bar for dinner tonight. Cereal counts.",
+        ],
+        "theme": "exhaustion_relief",
+    },
+]
+
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 FPS = 30
+
+# --- Affiliate monetization ------------------------------------------------
+# Maps each theme to a relevant product search term. affiliate.py turns this
+# into a real Amazon Associates search-results link at runtime using your
+# own associate tag — no manual link curation needed per post.
+AMAZON_KEYWORDS = {
+    "morning_guilt": "easy school lunch containers for kids",
+    "time_management": "family command center organizer",
+    "self_care_permission": "self care gift set for moms",
+    "career_confidence": "planner for working moms",
+    "exhaustion_relief": "calming aromatherapy diffuser",
+    "small_wins": "reward candle self care",
+    "letting_go_of_perfect": "stress relief tea gift set",
+    "asking_for_help": "easy meal prep kit",
+    "presence_over_perfection": "screen free family games",
+    "identity_beyond_mom": "guided journal for moms",
+    "spotlight": "biography books inspiring women",
+}

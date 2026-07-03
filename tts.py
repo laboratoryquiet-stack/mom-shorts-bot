@@ -1,7 +1,9 @@
 """
 Free text-to-speech via edge-tts (Microsoft Edge's neural voices, no API key).
-Generates one mp3 per script line and returns each clip's duration via ffprobe,
-so build_video.py can sync captions/visuals precisely.
+Generates one mp3 per script line AND captures per-word timing (via edge-tts's
+WordBoundary events) so build_video.py can render word-by-word "karaoke"
+captions synced to the narration — the single biggest lever for retention on
+Shorts/Reels, versus static boxed captions.
 """
 import asyncio
 import json
@@ -22,19 +24,31 @@ def get_duration(path: str) -> float:
     return float(json.loads(out.stdout)["format"]["duration"])
 
 
-async def _synth(text: str, out_path: str):
+async def _synth_with_words(text: str, out_path: str):
     communicate = edge_tts.Communicate(text, VOICE, rate="-5%")
-    await communicate.save(out_path)
+    words = []
+    with open(out_path, "wb") as f:
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                f.write(chunk["data"])
+            elif chunk["type"] == "WordBoundary":
+                words.append({
+                    "word": chunk["text"],
+                    "start": chunk["offset"] / 10_000_000,      # 100ns units -> seconds
+                    "duration": chunk["duration"] / 10_000_000,
+                })
+    return words
 
 
 def synthesize_lines(lines, workdir="tmp"):
+    """Returns a list of dicts: {text, audio, duration, words: [{word,start,duration}]}."""
     os.makedirs(workdir, exist_ok=True)
     clips = []
     for i, line in enumerate(lines):
         out_path = os.path.join(workdir, f"line_{i}.mp3")
-        asyncio.run(_synth(line, out_path))
+        words = asyncio.run(_synth_with_words(line, out_path))
         duration = get_duration(out_path)
-        clips.append({"text": line, "audio": out_path, "duration": duration})
+        clips.append({"text": line, "audio": out_path, "duration": duration, "words": words})
     return clips
 
 

@@ -2,37 +2,35 @@
 Assembles the final vertical short using ffmpeg only (no moviepy — lighter,
 faster, and ffmpeg ships preinstalled on GitHub Actions ubuntu runners).
 
-Steps per line: trim a stock clip to the narration's duration, scale/crop to
-1080x1920, burn the caption text on top.
-Then: concat all line-segments, mix narration audio with background music
-(music ducked under narration), mux audio+video.
+Pipeline:
+1. Each stock clip is trimmed to its line's narration duration, scaled/cropped
+   to 1080x1920, and given a slow zoom (Ken Burns effect) so nothing sits on
+   a static frame — constant subtle motion is one of the biggest retention
+   levers on short-form video.
+2. Segments are concatenated into a silent video.
+3. Word-by-word "karaoke" captions (captions.py) are burned on top via
+   ffmpeg's subtitles filter, synced to the narration's real word timings.
+4. Narration audio is concatenated and mixed with background music (ducked
+   underneath), then muxed onto the captioned video.
 """
 import glob
 import os
 import random
 import subprocess
-import textwrap
 
 from config import VIDEO_WIDTH, VIDEO_HEIGHT, FPS
-
-FONT_PATH = "assets/caption_font.ttf"  # drop any free .ttf (e.g. Montserrat-Bold) here
-
-
-def wrap_caption(text, width=22):
-    return "\n".join(textwrap.wrap(text, width=width))
+from captions import build_ass
 
 
-def build_segment(clip_path, duration, caption, out_path):
-    wrapped = wrap_caption(caption).replace("'", "\u2019").replace(":", "\\:")
-    drawtext = (
-        f"drawtext=fontfile={FONT_PATH}:text='{wrapped}':"
-        f"fontcolor=white:fontsize=64:line_spacing=14:"
-        f"box=1:boxcolor=black@0.45:boxborderw=30:"
-        f"x=(w-text_w)/2:y=(h-text_h)/2:shadowcolor=black:shadowx=2:shadowy=2"
-    )
+def build_segment(clip_path, duration, out_path):
+    """Trim + scale/crop + subtle zoom (no captions here — captions are burned
+    globally afterward so they can span line boundaries cleanly)."""
+    frames = max(1, int(duration * FPS))
+    zoom_expr = "zoom+0.0015"
     vf = (
-        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=increase,"
-        f"crop={VIDEO_WIDTH}:{VIDEO_HEIGHT},{drawtext}"
+        f"scale={VIDEO_WIDTH*2}:{VIDEO_HEIGHT*2}:force_original_aspect_ratio=increase,"
+        f"crop={VIDEO_WIDTH*2}:{VIDEO_HEIGHT*2},"
+        f"zoompan=z='{zoom_expr}':d={frames}:s={VIDEO_WIDTH}x{VIDEO_HEIGHT}:fps={FPS}"
     )
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", "-1", "-i", clip_path,
@@ -50,6 +48,15 @@ def concat_segments(segment_paths, out_path):
     subprocess.run([
         "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", list_file,
         "-c", "copy", out_path,
+    ], check=True)
+
+
+def burn_captions(video_path, ass_path, out_path):
+    subprocess.run([
+        "ffmpeg", "-y", "-i", video_path,
+        "-vf", f"subtitles={ass_path}",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        out_path,
     ], check=True)
 
 
@@ -74,7 +81,6 @@ def pick_music():
 def mux_with_audio(video_path, narration_path, out_path):
     music = pick_music()
     if music:
-        # duck music under narration, loop music to cover full length, mix down
         filter_complex = (
             "[1:a]volume=1.0[narr];"
             "[2:a]volume=0.12[music];"
@@ -97,22 +103,28 @@ def mux_with_audio(video_path, narration_path, out_path):
 
 def build_final_video(clips, tts_lines, workdir="tmp", out_path="output.mp4"):
     """
-    clips: list of paths from fetch_clips.fetch_clips_for_script (>= len(tts_lines) ideally)
-    tts_lines: list of dicts from tts.synthesize_lines: {text, audio, duration}
+    clips: list of paths from fetch_clips.fetch_clips_for_script
+    tts_lines: list of dicts from tts.synthesize_lines:
+               {text, audio, duration, words: [{word, start, duration}]}
     """
     os.makedirs(workdir, exist_ok=True)
+
     segment_paths = []
     for i, line in enumerate(tts_lines):
         clip = clips[i % len(clips)]
         seg_out = os.path.join(workdir, f"seg_{i}.mp4")
-        build_segment(clip, line["duration"], line["text"], seg_out)
+        build_segment(clip, line["duration"], seg_out)
         segment_paths.append(seg_out)
 
     silent_video = os.path.join(workdir, "silent.mp4")
     concat_segments(segment_paths, silent_video)
 
+    ass_path = build_ass(tts_lines, out_path=os.path.join(workdir, "captions.ass"))
+    captioned_video = os.path.join(workdir, "captioned.mp4")
+    burn_captions(silent_video, ass_path, captioned_video)
+
     narration_full = os.path.join(workdir, "narration_full.mp3")
     concat_audio([l["audio"] for l in tts_lines], narration_full)
 
-    mux_with_audio(silent_video, narration_full, out_path)
+    mux_with_audio(captioned_video, narration_full, out_path)
     return out_path
