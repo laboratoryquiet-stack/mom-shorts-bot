@@ -140,6 +140,29 @@ HASHTAGS = (
     "#momtok #shortsfeed #motivation #selfcare #momguilt"
 )
 
+# Theme-specific tags layered on top of HASHTAGS — broad tags get you into
+# general feeds, specific tags get you in front of people actively
+# searching/engaging with that exact topic (usually higher-intent viewers).
+THEME_HASHTAGS = {
+    "morning_guilt": ["#morningroutine", "#schoolmorning", "#momguilt", "#backtoschool"],
+    "time_management": ["#timemanagement", "#productivitytips", "#momhacks"],
+    "self_care_permission": ["#selfcaretips", "#momselfcare", "#restisproductive"],
+    "career_confidence": ["#careerwomen", "#workingmother", "#bossmom"],
+    "exhaustion_relief": ["#momburnout", "#momtired", "#mentalload"],
+    "small_wins": ["#momwin", "#youregoodenough", "#momlifebelike"],
+    "letting_go_of_perfect": ["#perfectionism", "#imperfectlyperfect", "#realmomlife"],
+    "asking_for_help": ["#momsupportingmoms", "#itsokaytoaskforhelp"],
+    "presence_over_perfection": ["#presentparenting", "#putyourphonedown"],
+    "identity_beyond_mom": ["#momidentity", "#morethanmom", "#momswithdreams"],
+    "spotlight": ["#womeninspiringwomen", "#successstory", "#realstories"],
+    "tips": ["#momhacks", "#momtips", "#lifehacksformoms"],
+}
+
+
+def build_hashtags(theme: str) -> str:
+    extra = " ".join(THEME_HASHTAGS.get(theme, []))
+    return f"{HASHTAGS} {extra}".strip()
+
 # --- Persona / consistent branding ---------------------------------------
 # A recurring identity + sign-off, used on every video, builds recognition
 # the way a jingle or a talk-show sign-off does — repetition is the point.

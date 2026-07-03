@@ -24,18 +24,29 @@ from captions import build_ass
 
 def build_segment(clip_path, duration, out_path):
     """Trim + scale/crop + subtle zoom (no captions here — captions are burned
-    globally afterward so they can span line boundaries cleanly)."""
-    frames = max(1, int(duration * FPS))
-    zoom_expr = "zoom+0.0015"
+    globally afterward so they can span line boundaries cleanly).
+
+    IMPORTANT zoompan note: with a VIDEO input (not a still image), 'd' means
+    "hold each input frame for d output frames" — it must be 1 here, driving
+    the zoom incrementally per real input frame. Setting d to the full frame
+    count (an earlier bug in this file) multiplies output length by itself
+    (e.g. a 150-frame clip becomes 150x150 frames — ~12 minutes of output
+    from a 5-second clip), which hangs or times out the whole pipeline.
+    """
+    mult = 1.3  # headroom for the zoom so cropped edges never show
+    zoom_expr = "min(zoom+0.0015,1.4)"  # cap max zoom so it doesn't zoom in forever
     vf = (
-        f"scale={VIDEO_WIDTH*2}:{VIDEO_HEIGHT*2}:force_original_aspect_ratio=increase,"
-        f"crop={VIDEO_WIDTH*2}:{VIDEO_HEIGHT*2},"
-        f"zoompan=z='{zoom_expr}':d={frames}:s={VIDEO_WIDTH}x{VIDEO_HEIGHT}:fps={FPS}"
+        f"fps={FPS},"
+        f"scale={int(VIDEO_WIDTH*mult)}:{int(VIDEO_HEIGHT*mult)}:force_original_aspect_ratio=increase,"
+        f"crop={int(VIDEO_WIDTH*mult)}:{int(VIDEO_HEIGHT*mult)},"
+        f"zoompan=z='{zoom_expr}':d=1:"
+        f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+        f"s={VIDEO_WIDTH}x{VIDEO_HEIGHT}:fps={FPS}"
     )
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", "-1", "-i", clip_path,
         "-t", str(duration), "-vf", vf, "-an",
-        "-r", str(FPS), "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p",
         out_path,
     ], check=True)
 

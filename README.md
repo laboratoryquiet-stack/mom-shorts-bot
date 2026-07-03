@@ -3,6 +3,22 @@
 Fully automated pipeline: generates an affirmation script, narrates it with
 free TTS, pulls free stock clips, stitches a vertical short with captions +
 background music, and publishes to YouTube Shorts + Instagram Reels — 3×/day,
+
+## Important fix: the video-build bug that likely caused "nothing posts"
+An earlier version of `build_video.py` had a real bug in the zoom effect (`zoompan` filter) that could make a 5-second clip balloon into ~12 minutes of output, hanging or timing out the pipeline before it ever reached the upload step. This is fixed and verified with an actual ffmpeg render (confirmed: correct frame count, correct duration, ~4.5s render time for a 5-second segment). If you were on an older copy of this repo, replace `build_video.py` with this version.
+
+## Three ways to run this now
+- **`python post_youtube.py`** — posts to YouTube only. Fully independent of Instagram; use this if Instagram isn't set up yet.
+- **`python post_instagram.py`** — posts to Instagram only. Fully independent of YouTube.
+- **`python main.py`** — posts the SAME video to both platforms in one run (convenience option if you want identical content everywhere).
+
+Note: `post_youtube.py` and `post_instagram.py` each generate their own content independently, so if you run both, they may post different scripts/themes on a given day (each pulls its own turn from the rotation). If you specifically want identical content on both platforms every time, use `main.py` instead.
+
+The GitHub Actions workflow now runs `post_youtube.py` on the 3x/day schedule (since that's what's set up), and lets you manually trigger `post_instagram.py` or both from the Actions tab (use the "Run workflow" button and pick a target from the dropdown) once Instagram is ready.
+
+## Stronger tags for discoverability
+Hashtags/tags now combine broad discovery tags (`config.HASHTAGS`) with theme-specific tags (`config.THEME_HASHTAGS`) — broad tags get you into general feeds, specific tags put you in front of people actively searching that exact topic, who tend to be higher-intent viewers.
+
 $0 running cost, hosted on GitHub Actions' free tier.
 
 ## What's actually free vs. what needs a one-time signup
