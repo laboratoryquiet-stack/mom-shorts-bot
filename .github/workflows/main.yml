@@ -35,5 +35,6 @@ jobs:
         YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
         YT_TOKEN: ${{ secrets.YT_TOKEN }}
       run: |
-        python build_video.py
-        python upload_youtube.py
+        python post_youtube.py
+
+        
