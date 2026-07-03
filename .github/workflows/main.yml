@@ -1,0 +1,39 @@
+name: Automated Video Creation Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Runs at 6:00 AM UTC
+    - cron: '0 14 * * *'  # Runs at 2:00 PM UTC
+    - cron: '0 22 * * *'  # Runs at 10:00 PM UTC
+  workflow_dispatch:      # Allows us to run it manually with a single click
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: Install Project Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run Video Pipeline and Upload
+      env:
+        PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+        YT_TOKEN: ${{ secrets.YT_TOKEN }}
+      run: |
+        python build_video.py
+        python upload_youtube.py
