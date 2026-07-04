@@ -28,7 +28,7 @@ from google.oauth2.credentials import Credentials
 
 from trending_topics import KEYWORD_THEME_MAP
 
-YT_SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+from upload_youtube import SCOPES as YT_SCOPES
 GRAPH_ROOT = "https://graph.facebook.com/v19.0"
 
 

@@ -7,7 +7,7 @@ independently — one can run/fail/be disabled without affecting the other.
 import os
 import shutil
 
-from config import VIDEO_KEYWORDS, build_hashtags
+from config import VIDEO_KEYWORDS, build_hashtags, top_title_hashtags
 from generate_script import generate
 from tts import synthesize_lines
 from fetch_clips import fetch_clips_for_script
@@ -37,6 +37,7 @@ def build_video_asset(workdir="tmp", out_path="output.mp4"):
     print("Built video:", video_path)
 
     hashtags = build_hashtags(theme)
+    title_tags = top_title_hashtags(theme)
     base_text = f"{' '.join(lines)}\n\n{hashtags}"
 
     return {
@@ -46,5 +47,6 @@ def build_video_asset(workdir="tmp", out_path="output.mp4"):
         "display_theme": display_theme,
         "lines": lines,
         "hashtags": hashtags,
+        "title_tags": title_tags,
         "base_text": base_text,
     }

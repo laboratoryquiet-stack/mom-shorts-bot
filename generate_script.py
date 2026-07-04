@@ -36,7 +36,7 @@ import random
 from config import (
     THEMES, OPENERS, AFFIRMATIONS, CLOSERS, TAGLINE,
     CALENDAR_THEME_BOOST, SPOTLIGHT_STORIES, FALLBACK_TAG,
-    TIP_CONTENT, TIP_TAG,
+    TIP_CONTENT,
 )
 from trending_topics import fetch_trending_theme
 from audience_comments import fetch_audience_theme

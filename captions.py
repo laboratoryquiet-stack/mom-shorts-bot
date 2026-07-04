@@ -10,10 +10,16 @@ heavy outline for legibility over any background clip.
 from config import VIDEO_WIDTH, VIDEO_HEIGHT
 
 # ASS colors are &HAABBGGRR (alpha, blue, green, red)
-HIGHLIGHT_COLOR = "&H0000FFFF"  # yellow (already-spoken words)
+HIGHLIGHT_COLOR = "&H0066D1FF"  # warm gold (already-spoken words) — matches the brand tone better than plain yellow
 BASE_COLOR = "&H00FFFFFF"       # white (not-yet-spoken words)
-OUTLINE_COLOR = "&H00000000"    # black outline
+BOX_BG_COLOR = "&H80000000"     # semi-transparent black card behind the text, for legibility over any clip
 FONT_NAME = "DejaVu Sans"       # preinstalled on Ubuntu GitHub Actions runners
+
+# Position: Alignment=2 is bottom-center in ASS. MarginV then pushes the
+# block UP from the bottom edge. VIDEO_HEIGHT * 0.25 puts the caption block
+# roughly 3/4 of the way down the frame (25% up from the bottom), instead
+# of dead-center — keeps the main subject of the clip visible up top.
+MARGIN_V = int(VIDEO_HEIGHT * 0.25)
 
 HEADER = f"""[Script Info]
 ScriptType: v4.00+
@@ -23,7 +29,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Karaoke,{FONT_NAME},76,{HIGHLIGHT_COLOR},{BASE_COLOR},{OUTLINE_COLOR},&H64000000,1,0,0,0,100,100,2,0,1,5,2,5,70,70,0,1
+Style: Karaoke,{FONT_NAME},72,{HIGHLIGHT_COLOR},{BASE_COLOR},&H00000000,{BOX_BG_COLOR},1,0,0,0,100,100,2,0,3,18,0,2,70,70,{MARGIN_V},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

@@ -135,33 +135,43 @@ VIDEO_KEYWORDS = [
     "woman office smiling confident",
 ]
 
-HASHTAGS = (
-    "#workingmom #momlife #momaffirmations #momsofinstagram #mentalload "
-    "#momtok #shortsfeed #motivation #selfcare #momguilt"
-)
+HASHTAGS = "#workingmom #momlife #momtok #shortsfeed #momsofinstagram"
 
 # Theme-specific tags layered on top of HASHTAGS — broad tags get you into
 # general feeds, specific tags get you in front of people actively
 # searching/engaging with that exact topic (usually higher-intent viewers).
+# Kept to 2 per theme deliberately: YouTube ignores ALL hashtags on a video
+# if the total (title + description combined) exceeds 15 — going wide with
+# hashtags isn't free, it actively risks losing every one of them.
 THEME_HASHTAGS = {
-    "morning_guilt": ["#morningroutine", "#schoolmorning", "#momguilt", "#backtoschool"],
-    "time_management": ["#timemanagement", "#productivitytips", "#momhacks"],
-    "self_care_permission": ["#selfcaretips", "#momselfcare", "#restisproductive"],
-    "career_confidence": ["#careerwomen", "#workingmother", "#bossmom"],
-    "exhaustion_relief": ["#momburnout", "#momtired", "#mentalload"],
-    "small_wins": ["#momwin", "#youregoodenough", "#momlifebelike"],
-    "letting_go_of_perfect": ["#perfectionism", "#imperfectlyperfect", "#realmomlife"],
-    "asking_for_help": ["#momsupportingmoms", "#itsokaytoaskforhelp"],
+    "morning_guilt": ["#morningroutine", "#momguilt"],
+    "time_management": ["#timemanagement", "#momhacks"],
+    "self_care_permission": ["#selfcaretips", "#momselfcare"],
+    "career_confidence": ["#careerwomen", "#bossmom"],
+    "exhaustion_relief": ["#momburnout", "#mentalload"],
+    "small_wins": ["#momwin", "#momlifebelike"],
+    "letting_go_of_perfect": ["#perfectionism", "#realmomlife"],
+    "asking_for_help": ["#momsupportingmoms", "#askforhelp"],
     "presence_over_perfection": ["#presentparenting", "#putyourphonedown"],
-    "identity_beyond_mom": ["#momidentity", "#morethanmom", "#momswithdreams"],
-    "spotlight": ["#womeninspiringwomen", "#successstory", "#realstories"],
-    "tips": ["#momhacks", "#momtips", "#lifehacksformoms"],
+    "identity_beyond_mom": ["#momidentity", "#morethanmom"],
+    "spotlight": ["#womeninspiringwomen", "#successstory"],
+    "tips": ["#momhacks", "#momtips"],
 }
 
 
 def build_hashtags(theme: str) -> str:
+    """Full hashtag set for the description — kept to ~7 total + #Shorts in
+    the title = 8, comfortably under YouTube's 15-hashtag limit."""
     extra = " ".join(THEME_HASHTAGS.get(theme, []))
     return f"{HASHTAGS} {extra}".strip()
+
+
+def top_title_hashtags(theme: str, n=2) -> str:
+    """The 1-2 MOST relevant hashtags, meant to go directly in the video
+    title alongside #Shorts — title hashtags get the most visible/prominent
+    placement (shown right above the title), so put your best ones there."""
+    tags = THEME_HASHTAGS.get(theme, [])[:n]
+    return " ".join(tags)
 
 # --- Persona / consistent branding ---------------------------------------
 # A recurring identity + sign-off, used on every video, builds recognition
@@ -209,7 +219,6 @@ SPOTLIGHT_STORIES = [
 ]
 
 FALLBACK_TAG = "spotlight"  # theme key used when a spotlight story is selected
-TIP_TAG = "tips"            # theme key used when a practical-tips set is selected
 
 # --- Practical tips bank -----------------------------------------------
 # Unlike AFFIRMATIONS, these are curated as coherent sets (not freely mixed)

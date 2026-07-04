@@ -15,7 +15,7 @@ from log_post import log_post
 def main():
     asset = build_video_asset()
 
-    title = f"{asset['display_theme']} for Working Moms \U0001F49B #Shorts"
+    title = f"{asset['display_theme']} for Working Moms \U0001F49B #Shorts {asset['title_tags']}"
     description = asset["base_text"] + youtube_description_addon(asset["theme"])
 
     # Tags: mix broad discovery tags with theme-specific ones (same logic as
