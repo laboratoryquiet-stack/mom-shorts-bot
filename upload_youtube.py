@@ -16,6 +16,10 @@ so 3 uploads/day (4,800 units) is well within the free daily limit.
 """
 import os
 
+import os
+
+from google.auth.exceptions import RefreshError
+from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -28,8 +32,53 @@ SCOPES = [
 
 
 def get_authenticated_service():
-    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    return build("youtube", "v3", credentials=creds)
+    """
+    Loads token.json and returns an authenticated YouTube client.
+
+    Automatic refresh: as long as token.json contains a refresh_token (it
+    does, since we request offline access), the google-auth library
+    automatically exchanges it for a fresh short-lived access token on every
+    run — no human involvement needed for this part, indefinitely.
+
+    The ONLY things that force a human back into a browser are:
+    1. The very first login for a given set of scopes (unavoidable by
+       design — a script silently minting its own first token would be a
+       real security hole, not a missing feature).
+    2. Changing the requested SCOPES list (adding/removing a permission
+       always invalidates the old token and needs fresh consent — this is
+       what happened when force-ssl was added).
+    3. Your Google Cloud OAuth app being left in "Testing" publishing status,
+       which makes Google force-expire the refresh token after 7 days. This
+       is the one truly worth fixing once, so the bot never needs a human
+       again: Google Cloud Console -> APIs & Services -> OAuth consent
+       screen -> Publishing status -> Publish App.
+
+    If a human DOES need to re-auth, this fails with a clear message rather
+    than a cryptic RefreshError deep in a library stack trace.
+    """
+    if not os.path.exists("token.json"):
+        raise RuntimeError(
+            "token.json not found. Run `python upload_youtube.py --auth` once "
+            "locally, then save its contents as the YT_TOKEN GitHub secret."
+        )
+    try:
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+        if creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+            # Persist the refreshed token so subsequent steps/commits see it too.
+            with open("token.json", "w") as f:
+                f.write(creds.to_json())
+        return build("youtube", "v3", credentials=creds)
+    except RefreshError as e:
+        raise RuntimeError(
+            "YouTube auth needs a human to re-login — this happens if scopes "
+            "changed, access was revoked, or your Google Cloud OAuth app is "
+            "still in 'Testing' mode (forces expiry every 7 days; fix by "
+            "publishing the app in the OAuth consent screen settings). "
+            "Fix: delete token.json, rerun `python upload_youtube.py --auth`, "
+            "and update the YT_TOKEN GitHub secret with the new contents. "
+            f"Original error: {e}"
+        ) from e
 
 
 def run_local_auth_flow():
