@@ -12,7 +12,27 @@ import subprocess
 
 import edge_tts
 
-VOICE = "en-US-JennyNeural"  # warm, natural female voice; swap to en-US-AriaNeural etc. if desired
+# Two distinct voices by content register, not one voice for everything:
+# - AFFIRMATION_VOICE: brighter, a touch more energetic — motivational content
+# - SUPPORT_VOICE: warmer, calmer, more mature — reads like an older, wise,
+#   comforting presence. Picked from Microsoft's documented voice
+#   characteristics (Michelle is described as warm/mature/calm) — I can't
+#   play audio in this environment to confirm by ear, so if it's not quite
+#   right once you actually hear it, swap the name below; nothing else
+#   needs to change.
+VOICE_PROFILES = {
+    "affirmation": {
+        "voice": os.environ.get("AFFIRMATION_VOICE", "en-US-JennyNeural"),
+        "rate": "-5%",
+        "pitch": "0Hz",
+    },
+    "support": {
+        "voice": os.environ.get("SUPPORT_VOICE", "en-US-MichelleNeural"),
+        "rate": "-13%",
+        "pitch": "-2Hz",
+    },
+}
+DEFAULT_PROFILE = "affirmation"  # used for tips/spotlight/anything not explicitly "support"
 
 
 def get_duration(path: str) -> float:
@@ -24,8 +44,8 @@ def get_duration(path: str) -> float:
     return float(json.loads(out.stdout)["format"]["duration"])
 
 
-async def _synth_with_words(text: str, out_path: str):
-    communicate = edge_tts.Communicate(text, VOICE, rate="-5%")
+async def _synth_with_words(text: str, out_path: str, voice: str, rate: str, pitch: str):
+    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
     words = []
     with open(out_path, "wb") as f:
         async for chunk in communicate.stream():
@@ -40,13 +60,18 @@ async def _synth_with_words(text: str, out_path: str):
     return words
 
 
-def synthesize_lines(lines, workdir="tmp"):
-    """Returns a list of dicts: {text, audio, duration, words: [{word,start,duration}]}."""
+def synthesize_lines(lines, workdir="tmp", content_type=None):
+    """Returns a list of dicts: {text, audio, duration, words: [{word,start,duration}]}.
+    content_type picks the voice profile ("affirmation" or "support") —
+    anything else falls back to the default (affirmation) profile."""
+    profile = VOICE_PROFILES.get(content_type, VOICE_PROFILES[DEFAULT_PROFILE])
     os.makedirs(workdir, exist_ok=True)
     clips = []
     for i, line in enumerate(lines):
         out_path = os.path.join(workdir, f"line_{i}.mp3")
-        words = asyncio.run(_synth_with_words(line, out_path))
+        words = asyncio.run(_synth_with_words(
+            line, out_path, profile["voice"], profile["rate"], profile["pitch"]
+        ))
         duration = get_duration(out_path)
         clips.append({"text": line, "audio": out_path, "duration": duration, "words": words})
     return clips

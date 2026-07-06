@@ -111,11 +111,11 @@ CLOSERS = [
     "Tag a mom who needs to hear this today.",
     "Save this for the mornings that feel too heavy.",
     "You've got this. One hour at a time.",
-    "Follow for the version of motherhood nobody posts about.",
+    "Subscribe for a daily reminder you're doing better than you think.",
     "Send this to a mom who's had a rough week.",
     "Comment your hardest part of today. I'll go first: mine was bedtime.",
     "You're not alone in this. Not even close.",
-    "Breathe. You are already doing enough.",
+    "Follow along — new reminder every single day.",
     "Bookmark this for tomorrow morning.",
 ]
 
@@ -151,8 +151,7 @@ THEME_HASHTAGS = {
     "exhaustion_relief": ["#momburnout", "#mentalload"],
     "small_wins": ["#momwin", "#momlifebelike"],
     "letting_go_of_perfect": ["#perfectionism", "#realmomlife"],
-    "asking_for_help": ["#momsupportingmoms", "#askforhelp"],
-    "presence_over_perfection": ["#presentparenting", "#putyourphonedown"],
+    "asking_for_help": ["#momsupportingmoms", "#askforhelp"],    "presence_over_perfection": ["#presentparenting", "#putyourphonedown"],
     "identity_beyond_mom": ["#momidentity", "#morethanmom"],
     "spotlight": ["#womeninspiringwomen", "#successstory"],
     "tips": ["#momhacks", "#momtips"],
@@ -219,6 +218,61 @@ SPOTLIGHT_STORIES = [
 ]
 
 FALLBACK_TAG = "spotlight"  # theme key used when a spotlight story is selected
+
+# --- Support content bank ---------------------------------------------
+# A different register from AFFIRMATIONS on purpose: not a mantra recited AT
+# her, but something closer to what her own mother might say if she sat down
+# next to her right now — normalizing the chaos, reminding her she has a
+# community, and nudging her to remember she's a whole person, not just "mom."
+# Curated as coherent sets (like TIP_CONTENT), not freely recombined, because
+# this needs to read as one continuous, sincere thought, not shuffled lines.
+SUPPORT_CONTENT = [
+    {
+        "hook": "Nobody prepares you for how sudden it is — one day you're just you, and the next, you're someone's whole world.",
+        "lines": [
+            "That toddler losing it in the cereal aisle? That's not you failing. Every toddler is a tiny bomb in the cutest packaging, and that's just true for all of them.",
+            "You are allowed to ask someone else to carry this with you today.",
+            "There's a whole community of women who felt exactly this overwhelmed last week too. You are not doing this alone, even when it feels like it.",
+        ],
+        "theme": "asking_for_help",
+    },
+    {
+        "hook": "If I could sit with you for five minutes today, here's what I'd want you to hear.",
+        "lines": [
+            "You're allowed to be a wonderful mother AND still want things just for you. Those aren't in competition.",
+            "Your career, your health, your own happiness — none of that became less important the day you became someone's mom.",
+            "Don't let 'good mother' quietly replace every other thing you are. You get to be a whole woman too.",
+        ],
+        "theme": "identity_beyond_mom",
+    },
+    {
+        "hook": "You don't have to do this with a straight face all the time.",
+        "lines": [
+            "It's okay to call someone and just say 'today was too much.' That's not weakness, that's how you're supposed to do this.",
+            "Somewhere, another mom is having the exact same day as you, right now, at the exact same time.",
+            "You were never meant to carry all of this by yourself. Let someone in.",
+        ],
+        "theme": "exhaustion_relief",
+    },
+    {
+        "hook": "I know some days it feels like you disappeared into 'mom' overnight.",
+        "lines": [
+            "You didn't. She's still there — the one with dreams, with a career she's building, with things she wants just for herself.",
+            "Chase those things too. Not instead of being a great mom — alongside it.",
+            "Being happy and whole is not selfish. It's part of what you're modeling for her.",
+        ],
+        "theme": "identity_beyond_mom",
+    },
+    {
+        "hook": "Here's something I wish someone had told me sooner.",
+        "lines": [
+            "Every wild, chaotic, impossible toddler moment is developmentally completely normal — it is not a reflection of your parenting.",
+            "You are allowed to find it hard AND love them completely at the same time. Both are true.",
+            "Ask for help before you're desperate for it, not after. That's wisdom, not weakness.",
+        ],
+        "theme": "letting_go_of_perfect",
+    },
+]
 
 # --- Practical tips bank -----------------------------------------------
 # Unlike AFFIRMATIONS, these are curated as coherent sets (not freely mixed)
@@ -291,4 +345,29 @@ AMAZON_KEYWORDS = {
     "presence_over_perfection": "screen free family games",
     "identity_beyond_mom": "guided journal for moms",
     "spotlight": "biography books inspiring women",
+}
+
+# --- Hand-picked specific products ---------------------------------------
+# These take priority over the generic keyword-search links above — a
+# specific, chosen product converts better than a generic search results
+# page, since it removes the extra step of the viewer having to browse and
+# decide themselves. Only themes with an actual picked product are listed
+# here; everything else falls back to the keyword search.
+SPECIFIC_PRODUCTS = {
+    "identity_beyond_mom": {
+        "asin": "B0C6C63KXB",
+        "label": "You're a Good Mom — a positive affirmations journal",
+    },
+    "letting_go_of_perfect": {
+        "asin": "B0F1ZFZKSW",
+        "label": "a calming tea for the nights that feel like too much",
+    },
+    "exhaustion_relief": {
+        "asin": "B083L8RNJR",
+        "label": "a percussion massager for when your body is as tired as you are",
+    },
+    "presence_over_perfection": {
+        "asin": "B0CHHNX51G",
+        "label": "a screen-free busy book for toddlers",
+    },
 }

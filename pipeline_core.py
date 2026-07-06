@@ -25,12 +25,13 @@ def build_video_asset(workdir="tmp", out_path="output.mp4"):
     lines = script["lines"]
     theme = script["theme"]
     opener = script.get("opener")
+    content_type = script.get("content_type", "affirmation")
     display_theme = theme.replace("_", " ").title()
 
-    print(f"Theme: {display_theme}")
+    print(f"Theme: {display_theme} | Content type: {content_type}")
     print("Lines:", lines)
 
-    tts_lines = synthesize_lines(lines)
+    tts_lines = synthesize_lines(lines, content_type=content_type)
     clips = fetch_clips_for_script(VIDEO_KEYWORDS, count=len(lines))
 
     video_path = build_final_video(clips, tts_lines, workdir=workdir, out_path=out_path)

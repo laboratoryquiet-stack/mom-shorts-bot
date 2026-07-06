@@ -36,7 +36,7 @@ import random
 from config import (
     THEMES, OPENERS, AFFIRMATIONS, CLOSERS, TAGLINE,
     CALENDAR_THEME_BOOST, SPOTLIGHT_STORIES, FALLBACK_TAG,
-    TIP_CONTENT,
+    TIP_CONTENT, SUPPORT_CONTENT,
 )
 from trending_topics import fetch_trending_theme
 from audience_comments import fetch_audience_theme
@@ -139,7 +139,8 @@ def generate_spotlight(state):
         random.choice(CLOSERS),
         TAGLINE,
     ]
-    return {"theme": FALLBACK_TAG, "opener": None, "lines": lines, "post_number": state["post_count"] + 1}
+    return {"theme": FALLBACK_TAG, "opener": None, "lines": lines,
+            "content_type": "affirmation", "post_number": state["post_count"] + 1}
 
 
 def generate_tips(state):
@@ -148,7 +149,43 @@ def generate_tips(state):
     tip_set = TIP_CONTENT[idx]
     lines = [tip_set["hook"], *tip_set["tips"], random.choice(CLOSERS), TAGLINE]
     return {"theme": tip_set["theme"], "opener": tip_set["hook"], "lines": lines,
-            "post_number": state["post_count"] + 1}
+            "content_type": "affirmation", "post_number": state["post_count"] + 1}
+
+
+def generate_support(state):
+    idx = state.get("support_index", 0) % len(SUPPORT_CONTENT)
+    state["support_index"] = idx + 1
+    support_set = SUPPORT_CONTENT[idx]
+    lines = [support_set["hook"], *support_set["lines"], random.choice(CLOSERS), TAGLINE]
+    return {"theme": support_set["theme"], "opener": support_set["hook"], "lines": lines,
+            "content_type": "support", "post_number": state["post_count"] + 1}
+
+
+def generate_affirmation(state):
+    history = state.setdefault("recent_signatures", [])
+    lines = None
+    theme = choose_theme(state)
+    opener_scores = state.get("opener_scores", {})
+
+    for _ in range(MAX_DEDUP_ATTEMPTS):
+        opener = draw_from_bag(OPENERS[theme], state, f"opener::{theme}", score_dict=opener_scores)
+        affirmations = [draw_from_bag(AFFIRMATIONS, state, "affirmations") for _ in range(3)]
+        closer = draw_from_bag(CLOSERS, state, "closers")
+        candidate = [opener, *affirmations, closer, TAGLINE]
+        sig = script_signature(candidate)
+        if sig not in history:
+            lines = candidate
+            history.append(sig)
+            break
+    else:
+        lines = candidate
+        history.append(sig)
+
+    if len(history) > SIGNATURE_HISTORY_SIZE:
+        del history[: len(history) - SIGNATURE_HISTORY_SIZE]
+
+    return {"theme": theme, "opener": opener, "lines": lines,
+            "content_type": "affirmation", "post_number": state["post_count"] + 1}
 
 
 def generate():
@@ -169,39 +206,19 @@ def generate():
         save_state(state)
         return result
 
-    history = state.setdefault("recent_signatures", [])
-    lines = None
-    theme = choose_theme(state)
-    opener_scores = state.get("opener_scores", {})
-
-    for _ in range(MAX_DEDUP_ATTEMPTS):
-        opener = draw_from_bag(OPENERS[theme], state, f"opener::{theme}", score_dict=opener_scores)
-        affirmations = [draw_from_bag(AFFIRMATIONS, state, "affirmations") for _ in range(3)]
-        closer = draw_from_bag(CLOSERS, state, "closers")
-        candidate = [opener, *affirmations, closer, TAGLINE]
-        sig = script_signature(candidate)
-        if sig not in history:
-            lines = candidate
-            history.append(sig)
-            break
+    # Regular slots alternate 1-for-1 between affirmation and support content —
+    # not everything should be a mantra; some posts should read like a warm,
+    # honest check-in instead. "regular_slot_parity" tracks whose turn it is.
+    parity = state.get("regular_slot_parity", 0)
+    if parity % 2 == 0:
+        result = generate_affirmation(state)
     else:
-        # Extremely unlikely with the current bank sizes, but fail safe rather
-        # than loop forever: accept the last candidate anyway.
-        lines = candidate
-        history.append(sig)
-
-    if len(history) > SIGNATURE_HISTORY_SIZE:
-        del history[: len(history) - SIGNATURE_HISTORY_SIZE]
+        result = generate_support(state)
+    state["regular_slot_parity"] = parity + 1
 
     state["post_count"] += 1
     save_state(state)
-
-    return {
-        "theme": theme,
-        "opener": opener,
-        "lines": lines,
-        "post_number": state["post_count"],
-    }
+    return result
 
 
 if __name__ == "__main__":

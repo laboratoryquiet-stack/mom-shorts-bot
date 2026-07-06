@@ -10,7 +10,7 @@ from pipeline_core import build_video_asset
 from host_video import publish_release_asset
 from upload_youtube import upload_short, post_affiliate_comment
 from upload_instagram import publish_reel
-from affiliate import youtube_description_addon, instagram_caption_addon, amazon_link_for_theme, DISCLOSURE
+from affiliate import youtube_description_addon, instagram_caption_addon, amazon_link_for_theme, amazon_label_for_theme, DISCLOSURE
 from log_post import log_post
 
 
@@ -29,7 +29,7 @@ def main():
     affiliate_link = amazon_link_for_theme(asset["theme"])
     if affiliate_link:
         try:
-            post_affiliate_comment(youtube_id, f"Something that might help: {affiliate_link}\n{DISCLOSURE}")
+            post_affiliate_comment(youtube_id, f"Something that might help: {amazon_label_for_theme(asset['theme'])} — {affiliate_link}\n{DISCLOSURE}")
         except Exception as e:
             print("Affiliate comment post failed (non-fatal):", e)
 
