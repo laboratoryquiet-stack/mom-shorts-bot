@@ -9,8 +9,8 @@ FPS = 30
 
 # Broad discovery tags for general reach
 HASHTAGS = [
-    "#workingmom", "#momlife", "#workingmother", "#motherhood", "#momsupport", 
-    "#workingmomlife", "#momhacks", "#parenting", "#momcommunity", "#motherhoodunplugged"
+    "#workingmom", "#momlife", "#workingmother", "#motherhood", "#momsupport", "#workingmom", "#momtok", "#shortsfeed" ,"#momsofinstagram", "#morningroutine", "#momguilt"
+       "#workingmomlife", "#momhacks", "#parenting", "#momcommunity", "#motherhoodunplugged"
 ]
 FALLBACK_TAG = "#workingmom"
 # Supported video content categories/themes
