@@ -1,4 +1,6 @@
 # config.py
+import random
+import urllib.parse
 
 # Broad discovery tags for general reach
 HASHTAGS = [
@@ -44,6 +46,45 @@ def top_title_hashtags():
     Returns a short string of high-leverage hashtags for video titles.
     """
     return "#workingmom #momlife"
+
+def get_safe_content(pool, used_list):
+    """
+    Safely selects an item from a content pool. If all items have been used,
+    it resets the tracking list to prevent empty pool index crashes.
+    """
+    available = [item for item in pool if item not in used_list]
+    
+    if not available:
+        used_list.clear()
+        available = pool
+        
+    selected = random.choice(available)
+    used_list.append(selected)
+    return selected
+
+def get_normalized_weights(custom_boosts=None):
+    """
+    Safely normalizes theme weights to ensure they sum to exactly 1.0
+    and contain no negative numbers, preventing random.choices() crashes.
+    """
+    target_boosts = custom_boosts if custom_boosts is not None else CALENDAR_THEME_BOOST
+    
+    # Ensure no negative weights exist
+    sanitized = {k: max(0.0, float(v)) for k, v in target_boosts.items()}
+    total = sum(sanitized.values())
+    
+    # Fallback to equal distribution if all weights are zero
+    if total == 0:
+        return {k: 1.0 / len(sanitized) for k in sanitized}
+        
+    return {k: v / total for k, v in sanitized.items()}
+
+def get_encoded_keywords():
+    """
+    Returns a list of safely URL-encoded keywords to prevent multi-word 
+    space characters from breaking external stock footage API requests.
+    """
+    return [urllib.parse.quote(kw) for kw in VIDEO_KEYWORDS]
 
 # Consistent persona tagline appended to every video
 TAGLINE = "You're doing better than you think. Follow for your daily working mom support."
@@ -127,7 +168,3 @@ SPOTLIGHT_STORIES = [
     "Joy Mangano, a divorced working mother of three, invented the Miracle Mop in her father's auto body shop. She sold 18,000 mops in 20 minutes on QVC, turning her practical mom-hack into a massive business empire.",
     "Before writing Harry Potter, J.K. Rowling was a single mother relying on state benefits. She wrote her early drafts in cafes while her baby slept in a stroller beside her, eventually building a literary phenomenon."
 ]
-
-import os
-
-FALLBACK_TAG = os.getenv("FALLBACK_TAG", "shorts")
