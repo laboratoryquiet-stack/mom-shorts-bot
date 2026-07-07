@@ -11,6 +11,8 @@ FALLBACK_TAG = "#workingmom"
 # Supported video content categories/themes
 THEMES = ["affirmation", "tips", "spotlight"]
 
+TIP_TAG = "tips"
+
 # Weighting configuration for the content calendar/scheduler
 CALENDAR_THEME_BOOST = {
     "affirmation": 0.4,
