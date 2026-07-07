@@ -127,3 +127,7 @@ SPOTLIGHT_STORIES = [
     "Joy Mangano, a divorced working mother of three, invented the Miracle Mop in her father's auto body shop. She sold 18,000 mops in 20 minutes on QVC, turning her practical mom-hack into a massive business empire.",
     "Before writing Harry Potter, J.K. Rowling was a single mother relying on state benefits. She wrote her early drafts in cafes while her baby slept in a stroller beside her, eventually building a literary phenomenon."
 ]
+
+import os
+
+FALLBACK_TAG = os.getenv("FALLBACK_TAG", "shorts")
