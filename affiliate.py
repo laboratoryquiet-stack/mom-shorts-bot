@@ -56,12 +56,15 @@ def amazon_label_for_theme(theme: str) -> str:
     description/comment text. Falls back to something generic for
     keyword-search themes without a specific pick."""
     specific = SPECIFIC_PRODUCTS.get(theme, SPECIFIC_PRODUCTS.get("default"))
-    if specific:
-        return specific["label"]
-    if isinstance(specific, list):
+    
+    # Handle list wrapping first
+    if isinstance(specific, list) and specific:
         specific = specific[0]
       
-    return specific["label"]
+    if isinstance(specific, dict):
+        return specific.get("label", "")
+        
+    return ""
 
 
 def ltk_profile_link() -> str:
