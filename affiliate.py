@@ -18,6 +18,7 @@ Important, read before relying on this for income:
 """
 import os
 import urllib.parse
+import random
 
 from config import AMAZON_KEYWORDS, SPECIFIC_PRODUCTS
 
@@ -37,6 +38,11 @@ def amazon_link_for_theme(theme: str) -> str:
     tag = os.environ.get("AMAZON_ASSOCIATE_TAG", DEFAULT_ASSOCIATE_TAG)
 
     specific = SPECIFIC_PRODUCTS.get(theme)
+  # Pick a random product from the theme's product list
+    if isinstance(specific, list):
+        specific = random.choice(specific)
+        
+        return f"https://www.amazon.com/dp/{specific['asin']}?tag={tag}"
     if specific:
         return f"https://www.amazon.com/dp/{specific['asin']}?tag={tag}"
 
