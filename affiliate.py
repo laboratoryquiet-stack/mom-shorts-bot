@@ -37,10 +37,10 @@ def amazon_link_for_theme(theme: str) -> str:
     keyword search only for themes without one picked yet."""
     tag = os.environ.get("AMAZON_ASSOCIATE_TAG", DEFAULT_ASSOCIATE_TAG)
 
-    specific = SPECIFIC_PRODUCTS.get(theme)
+    specific = SPECIFIC_PRODUCTS.get(theme, SPECIFIC_PRODUCTS.get("default"))
   # Pick a random product from the theme's product list
     if isinstance(specific, list):
-        specific = random.choice(specific)
+        specific = specific[0]
         
         return f"https://www.amazon.com/dp/{specific['asin']}?tag={tag}"
     if specific:
@@ -55,11 +55,12 @@ def amazon_label_for_theme(theme: str) -> str:
     """Human-readable description of the linked product, for the
     description/comment text. Falls back to something generic for
     keyword-search themes without a specific pick."""
-    specific = SPECIFIC_PRODUCTS.get(theme)
+    specific = SPECIFIC_PRODUCTS.get(theme, SPECIFIC_PRODUCTS.get("default"))
     if specific:
         return specific["label"]
     if isinstance(specific, list):
         specific = specific[0]
+      
     return specific["label"]
 
 
