@@ -2,9 +2,8 @@
 
 # Broad discovery tags for general reach
 HASHTAGS = [
-    "#workingmom", "#momlife", "#workingmother", "#motherhood",
-    "#momsupport", "#workingmomlife", "#momhacks", "#parenting",
-    "#momcommunity", "#motherhoodunplugged"
+    "#workingmom", "#momlife", "#workingmother", "#motherhood", "#momsupport", 
+    "#workingmomlife", "#momhacks", "#parenting", "#momcommunity", "#motherhoodunplugged"
 ]
 
 # Theme-specific tags for search intent
@@ -13,6 +12,9 @@ THEME_HASHTAGS = {
     "tips": ["#momtips", "#workingmomtips", "#lifehacks", "#timemanagement", "#momhack"],
     "spotlight": ["#womensupportingwomen", "#realwomen", "#inspiringwomen", "#workingwomen", "#womeninbusiness"]
 }
+
+# Core search/discovery keywords required by the pipeline
+VIDEO_KEYWORDS = ["parenting", "mom life", "shorts", "family", "working mom"]
 
 # Consistent persona tagline appended to every video
 TAGLINE = "You're doing better than you think. Follow for your daily working mom support."
