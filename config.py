@@ -2,6 +2,11 @@
 import random
 import urllib.parse
 
+# Video rendering dimensions for YouTube Shorts (Vertical 9:16)
+VIDEO_WIDTH = 1080
+VIDEO_HEIGHT = 1920
+FPS = 30
+
 # Broad discovery tags for general reach
 HASHTAGS = [
     "#workingmom", "#momlife", "#workingmother", "#motherhood", "#momsupport", 
