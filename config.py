@@ -6,6 +6,9 @@ HASHTAGS = [
     "#workingmomlife", "#momhacks", "#parenting", "#momcommunity", "#motherhoodunplugged"
 ]
 
+# Supported video content categories/themes
+THEMES = ["affirmation", "tips", "spotlight"]
+
 # Theme-specific tags for search intent
 THEME_HASHTAGS = {
     "affirmation": ["#momquotes", "#dailyaffirmations", "#mindfulmama", "#momencouragement", "#wordsofaffirmation"],
