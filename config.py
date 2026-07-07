@@ -7,7 +7,7 @@ HASHTAGS = [
     "#workingmom", "#momlife", "#workingmother", "#motherhood", "#momsupport", 
     "#workingmomlife", "#momhacks", "#parenting", "#momcommunity", "#motherhoodunplugged"
 ]
-
+FALLBACK_TAG = "#workingmom"
 # Supported video content categories/themes
 THEMES = ["affirmation", "tips", "spotlight"]
 
