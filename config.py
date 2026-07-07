@@ -9,6 +9,13 @@ HASHTAGS = [
 # Supported video content categories/themes
 THEMES = ["affirmation", "tips", "spotlight"]
 
+# Weighting configuration for the content calendar/scheduler
+CALENDAR_THEME_BOOST = {
+    "affirmation": 0.4,
+    "tips": 0.4,
+    "spotlight": 0.2
+}
+
 # Theme-specific tags for search intent
 THEME_HASHTAGS = {
     "affirmation": ["#momquotes", "#dailyaffirmations", "#mindfulmama", "#momencouragement", "#wordsofaffirmation"],
