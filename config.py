@@ -168,6 +168,10 @@ OPENERS = {
         "To the woman trying to give 100 percent to her boss and 100 percent to her kids...",
         "If you need some inspiration to keep pushing toward your career goals today...",
         "To the ambitious woman balancing building an empire and raising a family..."
+    ],
+    'asking_for_help': [
+        "Your list of opener text strings here",
+        "Another opener option"
     ]
 }
 
