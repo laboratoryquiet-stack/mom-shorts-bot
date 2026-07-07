@@ -58,6 +58,8 @@ def amazon_label_for_theme(theme: str) -> str:
     specific = SPECIFIC_PRODUCTS.get(theme)
     if specific:
         return specific["label"]
+    if isinstance(specific, list):
+        specific = random.choice(specific)
     return "something that might help"
 
 
