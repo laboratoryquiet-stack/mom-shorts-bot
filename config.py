@@ -125,28 +125,37 @@ def get_encoded_keywords():
 TAGLINE = "You're doing better than you think. Follow for your daily working mom support."
 
 # Expanded pool of hooks (Openers)
-OPENERS = [
-    "To the working mom who feels like she's dropping all the balls today...",
-    "If you were up at 3 AM with a baby and still had to log in at 8 AM...",
-    "A quick reminder for the mom running on dry shampoo and cold coffee...",
-    "To the mom managing a toddler's meltdown while trying to answer work emails...",
-    "Stop scrolling for just a second. I need you to hear this.",
-    "If you're feeling guilty about working today, listen to this.",
-    "For the mom who feels like she's failing at work and at home...",
-    "Take a deep breath. This message is exactly for you today.",
-    "To the mom who is constantly exhausted but keeps showing up with so much love...",
-    "Here is your daily reminder that you are exactly what your kids need.",
-    "If you're trying to balance spreadsheets and a teething baby on your hip...",
-    "For the working mama who just survived the bedtime chaos of a baby and a toddler...",
-    "Hey mama, pause for a second. You really need to hear this.",
-    "To the mom doing the chaotic daycare drop-off dash this morning...",
-    "If you are feeling completely touched-out and overwhelmed right now...",
-    "For the mom who cried in her car before walking into the office today...",
-    "To the woman trying to give 100 percent to her boss and 100 percent to her kids...",
-    "If your to-do list is longer than your energy span today...",
-    "To the mama hiding in the bathroom for two minutes of absolute peace...",
-    "If your coffee has been reheated three times already today..."
-]
+# Restructured pool of hooks (Openers) grouped by pipeline theme key
+OPENERS = {
+    "affirmation": [
+        "To the working mom who feels like she's dropping all the balls today...",
+        "A quick reminder for the mom running on dry shampoo and cold coffee...",
+        "Stop scrolling for just a second. I need you to hear this.",
+        "If you're feeling guilty about working today, listen to this.",
+        "For the mom who feels like she's failing at work and at home...",
+        "Take a deep breath. This message is exactly for you today.",
+        "Here is your daily reminder that you are exactly what your kids need.",
+        "Hey mama, pause for a second. You really need to hear this.",
+        "For the mom who cried in her car before walking into the office today...",
+        "If you are feeling completely touched-out and overwhelmed right now..."
+    ],
+    "tips": [
+        "If you were up at 3 AM with a baby and still had to log in at 8 AM...",
+        "To the mom managing a toddler's meltdown while trying to answer work emails...",
+        "If you're trying to balance spreadsheets and a teething baby on your hip...",
+        "For the working mama who just survived the bedtime chaos of a baby and a toddler...",
+        "To the mom doing the chaotic daycare drop-off dash this morning...",
+        "If your to-do list is longer than your energy span today...",
+        "To the mama hiding in the bathroom for two minutes of absolute peace...",
+        "If your coffee has been reheated three times already today..."
+    ],
+    "spotlight": [
+        "To the mom who is constantly exhausted but keeps showing up with so much love...",
+        "To the woman trying to give 100 percent to her boss and 100 percent to her kids...",
+        "If you need some inspiration to keep pushing toward your career goals today...",
+        "To the ambitious woman balancing building an empire and raising a family..."
+    ]
+}
 
 # Expanded pool of core messages (Affirmations)
 AFFIRMATIONS = [
