@@ -198,3 +198,27 @@ TIP_CONTENT = [
     "Set firm communication boundaries with your team regarding after-hours emails. Consistency prevents systemic burnout.",
     "Don't carry the load alone. Delegate age-appropriate tasks to toddlers, like putting toys into a basket or discarding trash."
 ]
+
+# Community messages and emotional support content for the pipeline
+SUPPORT_CONTENT = [
+    "Remember you are not alone in this journey. Millions of working moms are balancing the same daily struggles right alongside you.",
+    "If you need a safe space to vent, drop a comment below. This community stands together, completely free of judgment.",
+    "Give yourself permission to lower the bar today. A happy mom matters infinitely more than a perfectly clean house.",
+    "Check in on your working mom friends this week. A quick text message can completely turn someone's stressful day around.",
+    "It is completely okay to feel overwhelmed. Give yourself the same grace and kindness you endlessly pour into your kids.",
+    "You are doing a wonderful job matching your career ambitions with your family goals, even when it feels messy.",
+    "Your worth is not defined by how much you checked off your to-do list today. You are enough exactly as you are.",
+    "Be proud of how hard you show up every single day. Your kids see your dedication, and it is shaping them beautifully.",
+    "If nobody told you today: you are appreciated, you are valued, and the work you do at home and job matters.",
+    "Take comfort in knowing that this chaotic phase with a baby and a toddler is temporary. You will make it through.",
+    "You don't have to carry the entire mental load by yourself. It is okay to speak up and protect your energy.",
+    "Give yourself credit for the million tiny things you handle correctly, instead of focusing on the one thing that went wrong.",
+    "It's completely normal to feel torn between work commitments and home life. That conflict just shows how deeply you care.",
+    "Resting is not a sign of weakness; it's an essential strategy to help you take care of the people you love most.",
+    "Your children don't need a superhero who never makes mistakes. They just need a mom who loves them fiercely.",
+    "Let go of the guilt from today. You made the best decisions you could with the energy and time you had.",
+    "You are building a secure foundation and a beautiful future for your family through your hard work.",
+    "Take a deep breath and let go of external expectations. Run your home and your schedule your own way.",
+    "Celebrate your small victories today, whether it was nailing a presentation or surviving a bedtime routine.",
+    "You are stronger than you think, more resilient than you know, and doing much better than you realize."
+]
