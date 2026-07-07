@@ -25,6 +25,7 @@ AMAZON_KEYWORDS = {
     "affirmation": "self care gifts for moms mindfulness journal stress relief",
     "tips": "baby toddler travel gear parenting hacks time saving kitchen gadgets",
     "spotlight": "women entrepreneur books productivity planners business daily organizer",
+    "morning_guilt": "working mom guilt books mindfulness journal daily affirmations",
     "default": "working mom essentials daily organization tools"
 }
 
@@ -37,6 +38,10 @@ SPECIFIC_PRODUCTS = {
     "tips": [
         {"label": "Magnetic Dry Erase Weekly Family Calendar", "asin": "B07R68C4BF", "url": "https://www.amazon.com/dp/B07R68C4BF"},
         {"label": "Glass Meal Prep Containers (Pack of 5)", "asin": "B0777JD5S1", "url": "https://www.amazon.com/dp/B0777JD5S1"}
+    ],
+    "morning_guilt": [
+        {"label": "Good Inside by Dr. Becky Kennedy", "asin": "006315899X", "url": "https://www.amazon.com/dp/006315899X"},
+        {"label": "The Direct Affirmations Audio Loop Speaker", "asin": "B07H83S599", "url": "https://www.amazon.com/dp/B07H83S599"}
     ],
     "spotlight": [
         {"label": "Clever Fox Productivity Planner", "asin": "B07P7M6FNS", "url": "https://www.amazon.com/dp/B07P7M6FNS"},
@@ -55,6 +60,7 @@ CALENDAR_THEME_BOOST = {
 THEME_HASHTAGS = {
     "affirmation": ["#momquotes", "#dailyaffirmations", "#mindfulmama", "#momencouragement", "#wordsofaffirmation"],
     "tips": ["#momtips", "#workingmomtips", "#lifehacks", "#timemanagement", "#momhack"],
+    "morning_guilt": ["#momguilt", "#workingmomguilt", "#daycarelife", "#momencouragement", "#motherhoodunplugged"],
     "spotlight": ["#womensupportingwomen", "#realwomen", "#inspiringwomen", "#workingwomen", "#womeninbusiness"]
 }
 
@@ -150,6 +156,12 @@ OPENERS = {
         "If your to-do list is longer than your energy span today...",
         "To the mama hiding in the bathroom for two minutes of absolute peace...",
         "If your coffee has been reheated three times already today..."
+    ],
+    "morning_guilt": [
+        "To the mom feeling guilty for dropping her crying toddler off at daycare this morning...",
+        "If you felt a wave of guilt walking out the door while your baby reached for you...",
+        "For the mom who felt like she chose her job over her kids before 9 AM today...",
+        "To the working mom replaying this morning's chaotic goodbye on a loop..."
     ],
     "spotlight": [
         "To the mom who is constantly exhausted but keeps showing up with so much love...",
