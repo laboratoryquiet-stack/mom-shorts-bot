@@ -172,3 +172,27 @@ SPOTLIGHT_STORIES = [
     "Joy Mangano, a divorced working mother of three, invented the Miracle Mop in her father's auto body shop. She sold 18,000 mops in 20 minutes on QVC, turning her practical mom-hack into a massive business empire.",
     "Before writing Harry Potter, J.K. Rowling was a single mother relying on state benefits. She wrote her early drafts in cafes while her baby slept in a stroller beside her, eventually building a literary phenomenon."
 ]
+
+# Practical productivity, time-management, and life hacks for working moms
+TIP_CONTENT = [
+    "Prep breakfast the night before. Overnight oats or pre-chopped fruit smoothies save 15 minutes of morning chaos.",
+    "Block out the final 15 minutes of your workday to organize tomorrow's tasks. It stops evening mental tracking loops.",
+    "Use the 2-minute rule: If a household task takes under two minutes, do it immediately to prevent messy compounding clutter.",
+    "Create a hidden WFH 'sick day box' filled with new coloring books and toys to keep kids busy during emergency work calls.",
+    "Implement a strict shared family calendar. If an appointment or task isn't logged digitally, it does not exist.",
+    "Batch cook your core proteins on Sunday. Pre-shredded chicken or browned beef slashes weekday dinner prep time in half.",
+    "Keep a duplicate set of essential device chargers, wipes, and shelf-stable snacks permanently inside your car trunk.",
+    "Try a 5-minute 'one-room sweep' before bed. Resetting just the main living space prevents waking up to chaotic clutter.",
+    "Say no to non-essential volunteer commitments. Guard your weekend downtime as fiercely as you guard major work deadlines.",
+    "Set up automated recurring deliveries for household staples like diapers, wipes, laundry detergent, and trash bags.",
+    "Establish a 10-minute quiet transition gap between shutting down your laptop and stepping back into high-energy parenting mode.",
+    "Sort your kids' weekly outfits into a 5-compartment hanging closet organizer on Sunday night to eliminate morning wardrobe battles.",
+    "Mute personal social notifications and non-urgent group text threads during core deep-work hours to protect your focus.",
+    "Use phone voice notes to quickly capture content ideas or grocery list updates while commuting or multitasking.",
+    "Pick your outfit and lay out your house keys, work badge, and bags the night before. Morning-you will thank you.",
+    "Lower your baseline standard for non-critical chores. The dust can wait; your physical rest and mental peace cannot.",
+    "Combine tasks efficiently: listen to professional growth podcasts or audiobooks during your daily commute or laundry runs.",
+    "Designate a specific 'drop zone' by the front door for backpacks, shoes, and work bags to prevent last-minute scrambles.",
+    "Set firm communication boundaries with your team regarding after-hours emails. Consistency prevents systemic burnout.",
+    "Don't carry the load alone. Delegate age-appropriate tasks to toddlers, like putting toys into a basket or discarding trash."
+]
