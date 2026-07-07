@@ -18,6 +18,30 @@ THEMES = ["affirmation", "tips", "spotlight"]
 
 TIP_TAG = "tips"
 
+# Amazon Affiliate search terms mapped by video theme
+AMAZON_KEYWORDS = {
+    "affirmation": "self care gifts for moms mindfulness journal stress relief",
+    "tips": "baby toddler travel gear parenting hacks time saving kitchen gadgets",
+    "spotlight": "women entrepreneur books productivity planners business daily organizer",
+    "default": "working mom essentials daily organization tools"
+}
+
+# Targeted product links for specific themes used by the affiliate script
+SPECIFIC_PRODUCTS = {
+    "affirmation": [
+        {"label": "The 5-Minute Gratitude Journal for Moms", "asin": "B08XM6G8Y2", "url": "https://www.amazon.com/dp/B08XM6G8Y2"},
+        {"label": "Premium Aromatherapy Essential Oil Diffuser", "asin": "B018CLYHN0", "url": "https://www.amazon.com/dp/B018CLYHN0"}
+    ],
+    "tips": [
+        {"label": "Magnetic Dry Erase Weekly Family Calendar", "asin": "B07R68C4BF", "url": "https://www.amazon.com/dp/B07R68C4BF"},
+        {"label": "Glass Meal Prep Containers (Pack of 5)", "asin": "B0777JD5S1", "url": "https://www.amazon.com/dp/B0777JD5S1"}
+    ],
+    "spotlight": [
+        {"label": "Clever Fox Productivity Planner", "asin": "B07P7M6FNS", "url": "https://www.amazon.com/dp/B07P7M6FNS"},
+        {"label": "Option B by Sheryl Sandberg", "asin": "1524732680", "url": "https://www.amazon.com/dp/1524732680"}
+    ]
+}
+
 # Weighting configuration for the content calendar/scheduler
 CALENDAR_THEME_BOOST = {
     "affirmation": 0.4,
