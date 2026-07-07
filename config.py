@@ -18,6 +18,8 @@ THEMES = ["affirmation", "tips", "spotlight"]
 
 TIP_TAG = "tips"
 
+
+
 # Amazon Affiliate search terms mapped by video theme
 AMAZON_KEYWORDS = {
     "affirmation": "self care gifts for moms mindfulness journal stress relief",
@@ -72,12 +74,12 @@ def build_hashtags(theme=None, count=4):
     unique_tags = list(dict.fromkeys(tags))
     return " ".join(unique_tags[:count])
 
-def top_title_hashtags():
+def top_title_hashtags(theme=None):
     """
     Returns a short string of high-leverage hashtags for video titles.
     """
     return "#workingmom #momlife"
-
+    
 def get_safe_content(pool, used_list):
     """
     Safely selects an item from a content pool. If all items have been used,
