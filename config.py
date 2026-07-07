@@ -31,14 +31,14 @@ VIDEO_KEYWORDS = ["parenting", "mom life", "shorts", "family", "working mom"]
 def build_hashtags(theme=None, count=4):
     """
     Combines general hashtags and theme-specific hashtags.
-    Returns a space-separated string of hashtags.
+    Returns a space-separated string of ordered, unique hashtags.
     """
     tags = list(HASHTAGS)
     if theme and theme in THEME_HASHTAGS:
         tags.extend(THEME_HASHTAGS[theme])
     
-    # Return a unique, slice-limited list formatted as a string
-    unique_tags = list(set(tags))
+    # dict.fromkeys() removes duplicates while preserving the exact priority order
+    unique_tags = list(dict.fromkeys(tags))
     return " ".join(unique_tags[:count])
 
 def top_title_hashtags():
@@ -52,6 +52,10 @@ def get_safe_content(pool, used_list):
     Safely selects an item from a content pool. If all items have been used,
     it resets the tracking list to prevent empty pool index crashes.
     """
+    # Guard against completely empty pools to prevent fatal crashes
+    if not pool:
+        return ""
+
     available = [item for item in pool if item not in used_list]
     
     if not available:
