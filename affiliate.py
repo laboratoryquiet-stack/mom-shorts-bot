@@ -59,8 +59,8 @@ def amazon_label_for_theme(theme: str) -> str:
     if specific:
         return specific["label"]
     if isinstance(specific, list):
-        specific = random.choice(specific)
-    return "something that might help"
+        specific = specific[0]
+    return specific["label"]
 
 
 def ltk_profile_link() -> str:
