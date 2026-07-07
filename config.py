@@ -16,6 +16,25 @@ THEME_HASHTAGS = {
 # Core search/discovery keywords required by the pipeline
 VIDEO_KEYWORDS = ["parenting", "mom life", "shorts", "family", "working mom"]
 
+def build_hashtags(theme=None, count=4):
+    """
+    Combines general hashtags and theme-specific hashtags.
+    Returns a space-separated string of hashtags.
+    """
+    tags = list(HASHTAGS)
+    if theme and theme in THEME_HASHTAGS:
+        tags.extend(THEME_HASHTAGS[theme])
+    
+    # Return a unique, slice-limited list formatted as a string
+    unique_tags = list(set(tags))
+    return " ".join(unique_tags[:count])
+
+def top_title_hashtags():
+    """
+    Returns a short string of high-leverage hashtags for video titles.
+    """
+    return "#workingmom #momlife"
+
 # Consistent persona tagline appended to every video
 TAGLINE = "You're doing better than you think. Follow for your daily working mom support."
 
