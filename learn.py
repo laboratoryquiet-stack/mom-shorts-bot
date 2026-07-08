@@ -26,6 +26,11 @@ EMA_ALPHA = 0.3  # weight given to each new data point vs. history
 
 
 def load_state():
+    if not os.path.exists(STATE_PATH):
+        # First-ever run before any post has been logged - nothing to score
+        # yet. Returning an empty-but-valid state lets main() print its
+        # normal "nothing due yet" message instead of crashing the cron job.
+        return {"post_log": [], "theme_scores": {}, "opener_scores": {}}
     with open(STATE_PATH) as f:
         return json.load(f)
 

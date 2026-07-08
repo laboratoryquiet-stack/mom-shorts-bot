@@ -25,7 +25,8 @@ def main():
         asset["display_theme"].lower(),
     ]
 
-    youtube_id = upload_short(asset["video_path"], title=title, description=description, tags=tags)
+    youtube_id = upload_short(asset["video_path"], title=title, description=description, tags=tags,
+                               cover_path=asset.get("cover_path"))
     print(f"✅ Posted to YouTube: https://youtube.com/shorts/{youtube_id}")
 
     affiliate_link = amazon_link_for_theme(asset["theme"])

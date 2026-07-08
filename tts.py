@@ -13,7 +13,7 @@ import subprocess
 
 import edge_tts
 
-# Two distinct voices by content register, not one voice for everything:
+# Distinct voices by content register, not one voice/pace for everything:
 # - AFFIRMATION_VOICE: brighter, a touch more energetic — motivational content
 # - SUPPORT_VOICE: warmer, calmer, more mature — reads like an older, wise,
 #   comforting presence. Picked from Microsoft's documented voice
@@ -21,20 +21,36 @@ import edge_tts
 #   play audio in this environment to confirm by ear, so if it's not quite
 #   right once you actually hear it, swap the name below; nothing else
 #   needs to change.
+# - HUMOR_VOICE: same base voice as affirmation but noticeably faster/
+#   brighter, matching a punchline's pacing rather than a mantra's.
+#
+# Pacing note: rates were tightened from the original -5%/-13% because
+# current (2026) Shorts retention thresholds reportedly reward shorter,
+# tighter videos over slow contemplative pacing — a slow reading style
+# increases total runtime past the point where average-view-duration %
+# clears the algorithm's push-wider gate. If your own analytics data
+# suggests otherwise for your audience, these are the first values worth
+# A/B testing — change ONE profile at a time and compare in YouTube
+# Studio's retention curve before changing another.
 VOICE_PROFILES = {
     "affirmation": {
         "voice": os.environ.get("AFFIRMATION_VOICE", "en-US-JennyNeural"),
-        "rate": "-5%",
+        "rate": "-2%",
         "pitch": "+0Hz",
     },
     "support": {
         "voice": os.environ.get("SUPPORT_VOICE", "en-US-MichelleNeural"),
-        "rate": "-13%",
+        "rate": "-8%",
         "pitch": "-2Hz",
+    },
+    "humor": {
+        "voice": os.environ.get("HUMOR_VOICE", os.environ.get("AFFIRMATION_VOICE", "en-US-JennyNeural")),
+        "rate": "+8%",
+        "pitch": "+2Hz",
     },
 }
 
-DEFAULT_PROFILE = "affirmation"  # used for tips/spotlight/anything not explicitly "support"
+DEFAULT_PROFILE = "affirmation"  # used for tips/spotlight/myth_bust/this_or_that/anything not explicitly mapped above
 
 
 def get_duration(path: str) -> float:
