@@ -23,8 +23,7 @@ def main():
     tags = ["working mom", "motivation", "affirmations", "mom life", "shorts",
             asset["display_theme"].lower()]
 
-    youtube_id = upload_short(asset["video_path"], title=title, description=youtube_description, tags=tags,
-                               cover_path=asset.get("cover_path"))
+    youtube_id = upload_short(asset["video_path"], title=title, description=youtube_description, tags=tags)
     print(f"✅ Posted to YouTube: https://youtube.com/shorts/{youtube_id}")
 
     affiliate_link = amazon_link_for_theme(asset["theme"])

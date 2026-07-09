@@ -112,23 +112,6 @@ def mux_with_audio(video_path, narration_path, out_path):
         ], check=True)
 
 
-def extract_cover_frame(captioned_video_path: str, out_path: str, timestamp_seconds: float = 1.0) -> str:
-    """
-    Grabs a single frame (with the hook caption already burned in) to use as
-    a custom cover image. Shorts autoplay in-feed so this frame is never
-    seen there, but it IS what shows on your channel page, in Search, and
-    in Suggested - all places a static image with the hook text visible
-    can meaningfully lift click-through versus an arbitrary auto-picked
-    frame. Grabbed slightly after t=0 so the first caption word is already
-    on screen rather than catching a blank pre-roll frame.
-    """
-    subprocess.run([
-        "ffmpeg", "-y", "-ss", str(timestamp_seconds), "-i", captioned_video_path,
-        "-frames:v", "1", "-q:v", "2", out_path,
-    ], check=True)
-    return out_path
-
-
 def build_final_video(clips, tts_lines, workdir="tmp", out_path="output.mp4"):
     """
     clips: list of paths from fetch_clips.fetch_clips_for_script
@@ -155,12 +138,4 @@ def build_final_video(clips, tts_lines, workdir="tmp", out_path="output.mp4"):
     concat_audio([l["audio"] for l in tts_lines], narration_full)
 
     mux_with_audio(captioned_video, narration_full, out_path)
-
-    cover_path = os.path.join(workdir, "cover.jpg")
-    try:
-        extract_cover_frame(captioned_video, cover_path)
-    except subprocess.CalledProcessError as e:
-        print(f"[build_video] Cover frame extraction failed (non-fatal): {e}")
-        cover_path = None
-
-    return out_path, cover_path
+    return out_path

@@ -15,12 +15,8 @@ Important, read before relying on this for income:
 - Double-check Amazon's current Associates Program Operating Agreement for
   any platform-specific restrictions before relying on this long-term;
   affiliate program rules do change.
-- config.SPECIFIC_PRODUCTS ships empty on purpose. Fill it in yourself with
-  products you've actually vetted — don't trust ASINs written by an LLM as
-  verified/current, they can be wrong or discontinued.
 """
 import os
-import random
 import urllib.parse
 
 from config import AMAZON_KEYWORDS, SPECIFIC_PRODUCTS
@@ -34,30 +30,17 @@ DISCLOSURE = "As an Amazon Associate I earn from qualifying purchases. #ad"
 DEFAULT_ASSOCIATE_TAG = "quietlab-20"
 
 
-def _pick_specific_product(theme: str) -> dict | None:
-    """
-    config.SPECIFIC_PRODUCTS maps theme -> list of {label, asin} candidates.
-    Picks randomly within the list (so repeat posts on the same theme don't
-    always plug the exact same product), falling back to a "default" list
-    if the theme has no dedicated picks, or None if neither exists.
-    """
-    candidates = SPECIFIC_PRODUCTS.get(theme) or SPECIFIC_PRODUCTS.get("default")
-    if not candidates:
-        return None
-    return random.choice(candidates)
-
-
 def amazon_link_for_theme(theme: str) -> str:
     """Prefers a hand-picked specific product (better conversion — no extra
     browsing/deciding step for the viewer) and falls back to a generic
     keyword search only for themes without one picked yet."""
     tag = os.environ.get("AMAZON_ASSOCIATE_TAG", DEFAULT_ASSOCIATE_TAG)
 
-    specific = _pick_specific_product(theme)
+    specific = SPECIFIC_PRODUCTS.get(theme)
     if specific:
         return f"https://www.amazon.com/dp/{specific['asin']}?tag={tag}"
 
-    keyword = AMAZON_KEYWORDS.get(theme, AMAZON_KEYWORDS.get("default", "gifts for working moms"))
+    keyword = AMAZON_KEYWORDS.get(theme, "gifts for working moms")
     query = urllib.parse.quote_plus(keyword)
     return f"https://www.amazon.com/s?k={query}&tag={tag}"
 
@@ -66,9 +49,9 @@ def amazon_label_for_theme(theme: str) -> str:
     """Human-readable description of the linked product, for the
     description/comment text. Falls back to something generic for
     keyword-search themes without a specific pick."""
-    specific = _pick_specific_product(theme)
+    specific = SPECIFIC_PRODUCTS.get(theme)
     if specific:
-        return specific.get("label", "something that might help")
+        return specific["label"]
     return "something that might help"
 
 
@@ -92,9 +75,9 @@ def youtube_description_addon(theme: str) -> str:
     amazon = amazon_link_for_theme(theme)
     label = amazon_label_for_theme(theme)
     ltk = ltk_profile_link()
-    lines = [f"\U0001F6CD\uFE0F Something that might help: {label} — {amazon}"]
+    lines = [f"🛍️ Something that might help: {label} — {amazon}"]
     if ltk:
-        lines.append(f"\U0001F6CD\uFE0F My full shop: {ltk}")
+        lines.append(f"🛍️ My full shop: {ltk}")
     return "\n\n" + "\n".join(lines) + f"\n{DISCLOSURE}"
 
 
@@ -105,4 +88,4 @@ def instagram_caption_addon() -> str:
     your LTK profile — LTK is purpose-built for exactly this "shop my
     picks from Instagram" use case) rather than trying to change it per post.
     """
-    return f"\n\n\U0001F6CD\uFE0F Shopping list in bio\n{DISCLOSURE}"
+    return f"\n\n🛍️ Shopping list in bio\n{DISCLOSURE}"

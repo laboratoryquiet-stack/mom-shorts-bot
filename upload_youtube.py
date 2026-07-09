@@ -89,7 +89,7 @@ def run_local_auth_flow():
     print("Saved token.json — copy its contents into the YT_TOKEN GitHub secret.")
 
 
-def upload_short(video_path: str, title: str, description: str, tags=None, cover_path: str = None):
+def upload_short(video_path: str, title: str, description: str, tags=None):
     youtube = get_authenticated_service()
     body = {
         "snippet": {
@@ -105,23 +105,8 @@ def upload_short(video_path: str, title: str, description: str, tags=None, cover
     response = None
     while response is None:
         status, response = request.next_chunk()
-    video_id = response.get("id")
-    print("YouTube upload complete:", video_id)
-
-    if cover_path:
-        try:
-            youtube.thumbnails().set(
-                videoId=video_id, media_body=MediaFileUpload(cover_path, mimetype="image/jpeg")
-            ).execute()
-            print("Custom cover thumbnail set.")
-        except Exception as e:
-            # Custom thumbnails require a phone-verified channel, and
-            # Shorts-specific cover support via the API isn't guaranteed -
-            # this should never block the upload itself, which already
-            # succeeded above.
-            print(f"Cover thumbnail upload failed (non-fatal - video is still posted): {e}")
-
-    return video_id
+    print("YouTube upload complete:", response.get("id"))
+    return response.get("id")
 
 
 def post_affiliate_comment(video_id: str, comment_text: str):

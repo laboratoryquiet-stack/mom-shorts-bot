@@ -34,8 +34,8 @@ def build_video_asset(workdir="tmp", out_path="output.mp4"):
     tts_lines = synthesize_lines(lines, content_type=content_type)
     clips = fetch_clips_for_script(VIDEO_KEYWORDS, count=len(lines))
 
-    video_path, cover_path = build_final_video(clips, tts_lines, workdir=workdir, out_path=out_path)
-    print("Built video:", video_path, "| cover:", cover_path)
+    video_path = build_final_video(clips, tts_lines, workdir=workdir, out_path=out_path)
+    print("Built video:", video_path)
 
     hashtags = build_hashtags(theme)
     title_tags = top_title_hashtags(theme)
@@ -43,7 +43,6 @@ def build_video_asset(workdir="tmp", out_path="output.mp4"):
 
     return {
         "video_path": video_path,
-        "cover_path": cover_path,
         "theme": theme,
         "opener": opener,
         "display_theme": display_theme,
